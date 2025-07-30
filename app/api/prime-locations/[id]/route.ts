@@ -2,20 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '@/lib/mongoose';
 import { PrimeLocation } from '@/models/PrimeLocation';
 
-// PATCH: Update a prime location
-export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: any }) {
   try {
     await connectMongo();
-
-    const { id } = context.params;
     const body = await req.json();
+    const updated = await PrimeLocation.findByIdAndUpdate(params.id, body, { new: true });
 
-    const updated = await PrimeLocation.findByIdAndUpdate(id, body, { new: true });
-
-    if (!updated) {
-      return NextResponse.json({ message: 'Location not found' }, { status: 404 });
-    }
-
+    if (!updated) return NextResponse.json({ message: 'Location not found' }, { status: 404 });
     return NextResponse.json({ message: 'Location updated', location: updated });
   } catch (error) {
     console.error('PATCH error:', error);
@@ -23,18 +16,11 @@ export async function PATCH(req: NextRequest, context: { params: { id: string } 
   }
 }
 
-// DELETE: Remove a prime location
-export async function DELETE(_: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, { params }: { params: any }) {
   try {
     await connectMongo();
-
-    const { id } = context.params;
-    const location = await PrimeLocation.findByIdAndDelete(id);
-
-    if (!location) {
-      return NextResponse.json({ message: 'Location not found' }, { status: 404 });
-    }
-
+    const deleted = await PrimeLocation.findByIdAndDelete(params.id);
+    if (!deleted) return NextResponse.json({ message: 'Location not found' }, { status: 404 });
     return NextResponse.json({ message: 'Location deleted successfully' });
   } catch (error) {
     console.error('DELETE error:', error);
