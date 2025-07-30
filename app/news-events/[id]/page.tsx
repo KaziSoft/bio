@@ -12,7 +12,12 @@ interface NewsEvent {
   location?: string;
 }
 
-export default async function NewsEventDetailsPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: { id: string };
+  searchParams?: Record<string, string | string[] | undefined>;
+};
+
+export default async function NewsEventDetailsPage({ params, searchParams }: PageProps) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/news-events/${params.id}`, {
     cache: 'no-store',
   });
@@ -32,9 +37,11 @@ export default async function NewsEventDetailsPage({ params }: { params: { id: s
         <Image
           src={newsEvent.image}
           alt={newsEvent.title}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: 'cover' }}
           className="rounded-lg"
+          sizes="(max-width: 768px) 100vw, 768px"
+          priority
         />
       </div>
 
