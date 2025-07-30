@@ -24,9 +24,10 @@ export default async function NewsEventDetailsPage({ params }: { params: { id: s
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 text-gray-800 dark:text-gray-100">
       <h1 className="text-3xl md:text-4xl font-bold mb-4">{newsEvent.title}</h1>
-      <p className="text-sm text-gray-500 mb-6">{newsEvent.date} {newsEvent.location && `| ${newsEvent.location}`}</p>
+      <p className="text-sm text-gray-500 mb-6">
+        {newsEvent.date} {newsEvent.location && `| ${newsEvent.location}`}
+      </p>
 
-      {/* Image */}
       <div className="w-full h-64 md:h-96 relative mb-8 rounded-lg overflow-hidden">
         <Image
           src={newsEvent.image}
@@ -37,7 +38,6 @@ export default async function NewsEventDetailsPage({ params }: { params: { id: s
         />
       </div>
 
-      {/* Content */}
       <p className="text-lg leading-relaxed whitespace-pre-line">
         {newsEvent.description || newsEvent.summary}
       </p>
